@@ -94,7 +94,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/97668589/xui/master/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -113,7 +113,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/97668589/xui/master/install.sh)
     if [[ $? == 0 ]]; then
         LOGI "更新完成，已自动重启面板 "
         exit 0
@@ -296,13 +296,14 @@ migrate_v2_ui() {
 
 install_bbr() {
     # temporary workaround for installing bbr
-    bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
+    wget --no-check-certificate -O tcpx.sh https://raw.githubusercontent.com/97668589/BBR-NetSpeed/master/tcpx.sh
+	# bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
     echo ""
     before_show_menu
 }
 
 update_shell() {
-    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/vaxilu/x-ui/raw/master/x-ui.sh
+    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/97668589/xui/raw/master/x-ui.sh
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "下载脚本失败，请检查本机能否连接 Github"
@@ -503,7 +504,7 @@ show_usage() {
 
 show_menu() {
     echo -e "
-  ${green}x-ui 面板管理脚本${plain}
+  ${green}优秀的(x-ui)面板管理脚本${plain}
   ${green}0.${plain} 退出脚本
 ————————————————
   ${green}1.${plain} 安装 x-ui
@@ -524,7 +525,10 @@ show_menu() {
   ${green}13.${plain} 设置 x-ui 开机自启
   ${green}14.${plain} 取消 x-ui 开机自启
 ————————————————
-  ${green}15.${plain} 一键安装 bbr (最新内核)
+  ${green}15.${plain} BBR-NetSpeed
+  ${green}(最新BBR合集脚本：推荐BBR原版最新内核)
+  ${green}(安装后赋予执行权限：chmod +x tcpx.sh)
+  ${green}(执行脚本：./tcpx.sh)
   ${green}16.${plain} 一键申请SSL证书(acme申请)
  "
     show_status
