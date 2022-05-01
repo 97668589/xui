@@ -38,9 +38,14 @@ elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
 elif [[ $arch == "s390x" ]]; then
     arch="s390x"
 else
-    arch="amd64"
-    echo -e "${red}检测架构失败，使用默认架构: ${arch}${plain}"
+    echo -e "不支持的CPU架构！脚本将自动退出！"
+    rm -f install.sh
+    exit 1
 fi
+# else
+    # arch="amd64"
+    # echo -e "${red}检测架构失败，使用默认架构: ${arch}${plain}"
+# fi
 
 echo "架构: ${arch}"
 
