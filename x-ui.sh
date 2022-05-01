@@ -498,6 +498,7 @@ open_ports(){
     iptables -X
     netfilter-persistent save
     yellow "VPS中的所有网络端口已开启"
+}
 
 show_usage() {
     echo "x-ui 管理脚本使用方法: "
