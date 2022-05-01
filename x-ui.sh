@@ -296,8 +296,8 @@ migrate_v2_ui() {
 
 install_bbr() {
     # temporary workaround for installing bbr
-    wget --no-check-certificate -O tcpx.sh https://raw.githubusercontent.com/97668589/BBR-NetSpeed/master/tcpx.sh
-	# bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
+    wget --no-check-certificate -O tcpx.sh https://raw.githubusercontent.com/97668589/BBR-NetSpeed/master/tcpx.sh)
+    # bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
     echo ""
     before_show_menu
 }
@@ -484,6 +484,21 @@ ssl_cert_issue() {
     fi
 }
 
+open_ports(){
+    systemctl stop firewalld.service
+    systemctl disable firewalld.service
+    setenforce 0
+    ufw disable
+    iptables -P INPUT ACCEPT
+    iptables -P FORWARD ACCEPT
+    iptables -P OUTPUT ACCEPT
+    iptables -t nat -F
+    iptables -t mangle -F 
+    iptables -F
+    iptables -X
+    netfilter-persistent save
+    yellow "VPS中的所有网络端口已开启"
+
 show_usage() {
     echo "x-ui 管理脚本使用方法: "
     echo "------------------------------------------"
@@ -530,103 +545,46 @@ show_menu() {
   ${green}(安装后赋予执行权限：chmod +x tcpx.sh)
   ${green}(执行脚本：./tcpx.sh)
   ${green}16.${plain} 一键申请SSL证书(acme申请)
+  ${GREEN}16.${PLAIN} VPS防火墙放开所有网络端口
  "
     show_status
     echo && read -p "请输入选择 [0-16]: " num
-
     case "${num}" in
-    0)
-        exit 0
-        ;;
-    1)
-        check_uninstall && install
-        ;;
-    2)
-        check_install && update
-        ;;
-    3)
-        check_install && uninstall
-        ;;
-    4)
-        check_install && reset_user
-        ;;
-    5)
-        check_install && reset_config
-        ;;
-    6)
-        check_install && set_port
-        ;;
-    7)
-        check_install && check_config
-        ;;
-    8)
-        check_install && start
-        ;;
-    9)
-        check_install && stop
-        ;;
-    10)
-        check_install && restart
-        ;;
-    11)
-        check_install && status
-        ;;
-    12)
-        check_install && show_log
-        ;;
-    13)
-        check_install && enable
-        ;;
-    14)
-        check_install && disable
-        ;;
-    15)
-        install_bbr
-        ;;
-    16)
-        ssl_cert_issue
-        ;;
-    *)
-        LOGE "请输入正确的数字 [0-16]"
-        ;;
+    0)exit 0;;
+    1)check_uninstall && install;;
+    2)check_install && update;;
+    3)check_install && uninstall;;
+    4)check_install && reset_user;;
+    5)check_install && reset_config;;
+    6)check_install && set_port;;
+    7)check_install && check_config;;
+    8)check_install && start;;
+    9)check_install && stop;;
+    10)check_install && restart;;
+    11)check_install && status;;
+    12)check_install && show_log;;
+    13)check_install && enable;;
+    14)check_install && disable;;
+    15)install_bbr;;
+    16)ssl_cert_issue;;
+    17) open_ports ;;
+    *)LOGE "请输入正确的数字 [0-16]";;
     esac
 }
 
 if [[ $# > 0 ]]; then
     case $1 in
-    "start")
-        check_install 0 && start 0
-        ;;
-    "stop")
-        check_install 0 && stop 0
-        ;;
-    "restart")
-        check_install 0 && restart 0
-        ;;
-    "status")
-        check_install 0 && status 0
-        ;;
-    "enable")
-        check_install 0 && enable 0
-        ;;
-    "disable")
-        check_install 0 && disable 0
-        ;;
-    "log")
-        check_install 0 && show_log 0
-        ;;
-    "v2-ui")
-        check_install 0 && migrate_v2_ui 0
-        ;;
-    "update")
-        check_install 0 && update 0
-        ;;
-    "install")
-        check_uninstall 0 && install 0
-        ;;
-    "uninstall")
-        check_install 0 && uninstall 0
-        ;;
+    "start")check_install 0 && start 0;;
+    "stop")check_install 0 && stop 0;;
+    "restart")check_install 0 && restart 0;;
+    "status")check_install 0 && status 0;;
+    "enable")check_install 0 && enable 0;;
+    "disable")check_install 0 && disable 0;;
+    "log")check_install 0 && show_log 0;;
+    "v2-ui")check_install 0 && migrate_v2_ui 0;;
+    "update")check_install 0 && update 0;;
+    "install")check_uninstall 0 && install 0;;
+    "uninstall")check_install 0 && uninstall 0;;
     *) show_usage ;;
     esac
 else
