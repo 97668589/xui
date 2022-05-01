@@ -296,7 +296,7 @@ migrate_v2_ui() {
 
 install_bbr() {
     # temporary workaround for installing bbr
-    wget --no-check-certificate -O tcpx.sh https://raw.githubusercontent.com/97668589/BBR-NetSpeed/master/tcpx.sh)
+    wget --no-check-certificate -O tcpx.sh https://raw.githubusercontent.com/97668589/BBR-NetSpeed/master/tcpx.sh
     # bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
     echo ""
     before_show_menu
